@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hồng Quân – Giải Bài Tập Tin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --bg-1:#060818; --bg-2:#0c1030;
+  --neon-blue:#00e5ff; --neon-purple:#b14dff; --neon-pink:#ff4dd2;
+  --text:#e8f2ff; --muted:#8fa5c9;
+  --card-bg:rgba(15,22,50,0.75); --border:rgba(0,229,255,0.35);
+  --green:#00ff88; --red:#ff4d6d; --yellow:#ffcc00;
+}
+html,body {
+  min-height:100%; font-family:'Quicksand',sans-serif;
+  color:var(--text);
+  background: radial-gradient(circle at 20% 10%, #1a0a4a 0%, transparent 40%),
+              radial-gradient(circle at 80% 90%, #062a4a 0%, transparent 45%),
+              linear-gradient(135deg, var(--bg-1), var(--bg-2));
+  background-attachment:fixed; overflow-x:hidden;
+}
+#snowCanvas { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:1; }
+
+.music-btn {
+  position:fixed; top:16px; right:16px; z-index:100;
+  background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple));
+  color:#fff; border:none; padding:10px 18px; border-radius:30px;
+  font-family:'Orbitron',sans-serif; font-size:13px; font-weight:700; cursor:pointer;
+  box-shadow:0 0 18px rgba(0,229,255,0.6), 0 0 30px rgba(177,77,255,0.4);
+  transition:transform 0.2s, box-shadow 0.3s;
+}
+.music-btn:hover { transform:scale(1.06); }
+.music-btn.playing { animation:pulse 1.6s infinite; }
+@keyframes pulse {
+  0%,100% { box-shadow:0 0 18px var(--neon-blue), 0 0 30px var(--neon-purple); }
+  50%     { box-shadow:0 0 30px var(--neon-blue), 0 0 60px var(--neon-purple); }
+}
+
+.header { position:relative; z-index:2; text-align:center; padding:60px 20px 30px; }
+.logo { display:flex; align-items:center; justify-content:center; gap:18px; flex-wrap:wrap; }
+.book-icon {
+  position:relative; display:inline-flex; align-items:center; justify-content:center;
+  width:70px; height:70px; border-radius:50%;
+  background:radial-gradient(circle, rgba(0,229,255,0.25), transparent 70%);
+  animation: floatY 3s ease-in-out infinite;
+}
+.book-emoji { font-size:44px; filter:drop-shadow(0 0 12px var(--neon-blue)); }
+.book-glow {
+  position:absolute; inset:0; border-radius:50%;
+  box-shadow:0 0 25px var(--neon-blue), 0 0 45px var(--neon-purple);
+  animation: glow 2.5s ease-in-out infinite alternate;
+}
+@keyframes floatY { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-10px); } }
+@keyframes glow { from { opacity:0.5; } to { opacity:1; } }
+
+.header h1 {
+  font-family:'Orbitron',sans-serif; font-size:clamp(22px,4vw,42px); font-weight:900;
+  letter-spacing:1px;
+  background:linear-gradient(90deg, var(--neon-blue), var(--neon-purple), var(--neon-pink));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  text-shadow:0 0 30px rgba(0,229,255,0.4);
+}
+.header h1 span { font-size:0.7em; display:block; margin-top:4px; }
+.tagline { margin-top:14px; color:var(--muted); font-size:15px; }
+
+.container { position:relative; z-index:2; max-width:900px; margin:0 auto; padding:20px 16px 60px; display:flex; flex-direction:column; gap:26px; }
+
+.card {
+  background:var(--card-bg); border:1px solid var(--border); border-radius:18px;
+  padding:26px 22px; backdrop-filter:blur(10px);
+  box-shadow:0 8px 40px rgba(0,0,0,0.5), 0 0 30px rgba(0,229,255,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover { transform:translateY(-3px); }
+.card h2 {
+  font-family:'Orbitron',sans-serif; font-size:clamp(17px,2.4vw,22px);
+  margin-bottom:20px; color:#fff; text-shadow:0 0 14px var(--neon-blue);
+}
+.intro p { color:var(--muted); line-height:1.7; }
+
+/* ====== KEY INPUT ====== */
+.key-input-wrap { display:flex; gap:10px; flex-wrap:wrap; }
+.key-input-wrap input {
+  flex:1; min-width:200px; padding:14px 16px;
+  background:rgba(6,12,30,0.85); border:2px solid rgba(0,229,255,0.4);
+  border-radius:12px; color:var(--text); font-family:monospace;
+  font-size:16px; letter-spacing:1px; outline:none;
+  text-transform:uppercase; transition: border 0.25s, box-shadow 0.25s;
+}
+.key-input-wrap input:focus {
+  border-color:var(--neon-purple);
+  box-shadow:0 0 0 4px rgba(177,77,255,0.25), 0 0 25px rgba(0,229,255,0.4);
+}
+
+/* ====== KEY INFO ====== */
+.key-info {
+  display:none; margin-top:18px; padding:18px;
+  background:rgba(0,255,136,0.06); border:1px solid rgba(0,255,136,0.35);
+  border-radius:14px; animation: fadeIn 0.4s ease;
+}
+.key-info.show { display:block; }
+.key-info .key-display {
+  font-family:monospace; font-size:18px; font-weight:700;
+  color:var(--green); letter-spacing:1.5px; margin-bottom:14px;
+  text-shadow:0 0 12px rgba(0,255,136,0.6);
+}
+.key-info .info-grid {
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:12px;
+}
+.key-info .info-item {
+  background:rgba(0,0,0,0.3); padding:10px 12px; border-radius:10px;
+  border:1px solid rgba(0,255,136,0.2);
+}
+.key-info .info-item .label { font-size:11px; color:var(--muted); letter-spacing:0.5px; text-transform:uppercase; }
+.key-info .info-item .val { font-size:14px; font-weight:700; color:var(--green); margin-top:4px; }
+
+/* ====== FORM ====== */
+.neon-form { display:flex; flex-direction:column; gap:16px; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media (max-width:640px) { .form-row { grid-template-columns:1fr; } }
+.form-group { display:flex; flex-direction:column; gap:6px; }
+.form-group label { font-size:13.5px; font-weight:600; color:var(--neon-blue); letter-spacing:0.3px; }
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width:100%; padding:12px 14px;
+  background:rgba(6,12,30,0.85); border:1px solid rgba(0,229,255,0.3);
+  border-radius:10px; color:var(--text); font-family:inherit;
+  font-size:14.5px; outline:none; transition: border 0.25s, box-shadow 0.25s;
+  resize:vertical;
+}
+.form-group textarea { min-height:120px; }
+.form-group input::placeholder,
+.form-group textarea::placeholder { color:#5570a0; }
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color:var(--neon-purple);
+  box-shadow:0 0 0 3px rgba(177,77,255,0.25), 0 0 18px rgba(0,229,255,0.35);
+}
+.form-group select option { background:#0c1030; color:#fff; }
+
+/* ====== BUTTON ====== */
+.btn {
+  padding:14px 22px; border:none; border-radius:12px;
+  font-family:'Orbitron',sans-serif; font-size:14.5px; font-weight:700;
+  letter-spacing:0.5px; color:#fff; cursor:pointer;
+  transition: transform 0.2s, box-shadow 0.3s, filter 0.3s;
+}
+.btn:disabled { cursor:not-allowed; filter:grayscale(0.4) brightness(0.8); }
+.btn-primary { background:linear-gradient(135deg,#0077ff,var(--neon-blue)); box-shadow:0 0 20px rgba(0,229,255,0.6); }
+.btn-secondary { background:linear-gradient(135deg,#7a00ff,var(--neon-purple)); box-shadow:0 0 20px rgba(177,77,255,0.6); }
+.btn-success { background:linear-gradient(135deg,#00aa55,var(--green)); color:#001a10; box-shadow:0 0 20px rgba(0,255,136,0.5); }
+.btn-ghost { background:transparent; border:1px solid var(--border); color:var(--text); }
+.btn:not(:disabled):hover { transform:translateY(-2px); filter:brightness(1.1); }
+
+/* ====== MSG ====== */
+.form-msg {
+  margin-top:6px; padding:12px 14px; border-radius:10px;
+  font-size:14px; line-height:1.55; display:none; animation: fadeIn 0.4s ease;
+}
+.form-msg.show { display:block; }
+.form-msg.success { background:rgba(0,200,120,0.12); border:1px solid rgba(0,200,120,0.5); color:#6effc0; }
+.form-msg.error { background:rgba(255,60,100,0.12); border:1px solid rgba(255,60,100,0.5); color:#ff8ba5; }
+.form-msg.loading { background:rgba(0,229,255,0.1); border:1px solid rgba(0,229,255,0.4); color:var(--neon-blue); }
+
+@keyframes fadeIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:none; } }
+
+.footer {
+  text-align:center; color:var(--muted); font-size:13px;
+  padding:24px 10px 10px; border-top:1px solid rgba(0,229,255,0.12);
+}
+
+.locked-section { text-align:center; padding:30px 20px; color:var(--muted); }
+.locked-section .icon { font-size:52px; margin-bottom:14px; }
+.hidden { display:none !important; }
+
+@media (max-width:480px) {
+  .header { padding:50px 14px 20px; }
+  .card { padding:20px 16px; }
+  .music-btn { font-size:11.5px; padding:8px 14px; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="snowCanvas"></canvas>
+
+<audio id="bgMusic" loop>
+  <source src="music.mp3" type="audio/mpeg" />
+</audio>
+<button id="musicBtn" class="music-btn">🔇 Bật nhạc</button>
+
+<header class="header">
+  <div class="logo">
+    <div class="book-icon">
+      <span class="book-emoji">📘</span>
+      <span class="book-glow"></span>
+    </div>
+    <h1>Hồng Quân <span>– Giải Bài Tập Tin</span></h1>
+  </div>
+  <p class="tagline">Học tập thông minh • Giải bài tập nhanh • Hỗ trợ tận tâm</p>
+</header>
+
+<main class="container">
+
+  <!-- NHẬP KEY -->
+  <section class="card">
+    <h2>🔑 Nhập KEY để sử dụng dịch vụ</h2>
+    <div class="key-input-wrap">
+      <input type="text" id="keyInput" placeholder="VD: HQ-M1-XXXXX-XXXXX" />
+      <button class="btn btn-primary" id="checkKeyBtn">✓ Kiểm tra</button>
+      <button class="btn btn-ghost hidden" id="logoutKeyBtn">Thoát KEY</button>
+    </div>
+    <div class="form-msg" id="keyMsg"></div>
+
+    <div class="key-info" id="keyInfo">
+      <div class="key-display" id="keyDisplay"></div>
+      <div class="info-grid">
+        <div class="info-item"><div class="label">Loại</div><div class="val" id="infoType">-</div></div>
+        <div class="info-item"><div class="label">Còn lại</div><div class="val" id="infoExpires">-</div></div>
+        <div class="info-item"><div class="label">Lượt dùng</div><div class="val" id="infoUses">-</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NỘI DUNG (chỉ hiện khi có KEY hợp lệ) -->
+  <div id="contentArea" class="hidden" style="display:flex; flex-direction:column; gap:26px;">
+
+    <section class="card intro">
+      <h2>✨ Chào mừng đến với Hồng Quân</h2>
+      <p>Gửi bài tập để được hỗ trợ giải đáp. Vui lòng điền đầy đủ thông tin.</p>
+    </section>
+
+    <section class="card">
+      <h2>📝 Gửi bài tập cần giải</h2>
+      <form id="homeworkForm" class="neon-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="hwName">Họ và tên học sinh *</label>
+            <input type="text" id="hwName" placeholder="VD: Nguyễn Văn A" required />
+          </div>
+          <div class="form-group">
+            <label for="hwClass">Lớp *</label>
+            <input type="text" id="hwClass" placeholder="VD: 11A1" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="hwKey">KEY sử dụng *</label>
+            <input type="text" id="hwKey" placeholder="Tự động điền" readonly />
+          </div>
+          <div class="form-group">
+            <label for="hwTitle">Tên bài học *</label>
+            <input type="text" id="hwTitle" placeholder="VD: Bài 5 – Vòng lặp For" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="hwContent">Nội dung bài tập cần giải *</label>
+          <textarea id="hwContent" rows="6" placeholder="Dán đề bài hoặc mô tả yêu cầu..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="hwSubmitBtn">
+          <span class="btn-text">🚀 Gửi bài tập</span>
+          <span class="btn-spinner" hidden>⏳ Đang gửi...</span>
+        </button>
+        <div class="form-msg" id="hwMsg"></div>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>🔑 Mua KEY sử dụng dịch vụ</h2>
+      <form id="keyForm" class="neon-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="buyName">Tên người mua *</label>
+            <input type="text" id="buyName" placeholder="VD: Trần Thị B" required />
+          </div>
+          <div class="form-group">
+            <label for="buyContact">Email / Liên hệ *</label>
+            <input type="text" id="buyContact" placeholder="VD: email@gmail.com hoặc SĐT" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="buyType">Loại KEY *</label>
+            <select id="buyType" required>
+              <option value="">-- Chọn loại KEY --</option>
+              <option value="M1">M1</option>
+              <option value="M2">M2</option>
+              <option value="M3">M3</option>
+              <option value="Vĩnh viễn">Vĩnh viễn</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="buyQty">Số lượng KEY *</label>
+            <input type="number" id="buyQty" min="1" value="1" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="buyPay">Phương thức thanh toán *</label>
+          <select id="buyPay" required>
+            <option value="">-- Chọn phương thức --</option>
+            <option value="Chuyển khoản ngân hàng">Chuyển khoản ngân hàng</option>
+            <option value="Momo">Ví Momo</option>
+            <option value="ZaloPay">ZaloPay</option>
+            <option value="Thẻ cào điện thoại">Thẻ cào điện thoại</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-secondary" id="buySubmitBtn">
+          <span class="btn-text">💳 Gửi yêu cầu mua KEY</span>
+          <span class="btn-spinner" hidden>⏳ Đang gửi...</span>
+        </button>
+        <div class="form-msg" id="buyMsg"></div>
+      </form>
+    </section>
+
+  </div>
+
+  <!-- KHI CHƯA CÓ KEY -->
+  <div id="lockedArea" class="card">
+    <div class="locked-section">
+      <div class="icon">🔒</div>
+      <h3 style="color:var(--neon-blue); margin-bottom:10px; font-family:'Orbitron';">Vui lòng nhập KEY để sử dụng</h3>
+      <p>Nếu chưa có KEY, bạn có thể liên hệ quản trị viên để mua KEY.</p>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>© <span id="year"></span> Hồng Quân – Giải Bài Tập Tin. Made with 💙</p>
+  </footer>
+
+</main>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getDatabase, ref, get, update, query, orderByChild, equalTo
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+/* ====== CẤU HÌNH ====== */
+const firebaseConfig = {
+  apiKey: "AIzaSyBgMM_kWB6jDjYTgP2j-GEnMXKXTwxDdss",
+  authDomain: "hongquan-web.firebaseapp.com",
+  databaseURL: "https://hongquan-web-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "hongquan-web",
+  storageBucket: "hongquan-web.firebasestorage.app",
+  messagingSenderId: "117599956210",
+  appId: "1:117599956210:web:492dc0a9c290c4e346346b"
+};
+
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxxlYlwvhTBbyfo1r082PBdYz0kyIo2bLawhjcPn86jwgDmT7OtJXV79kuf0Mxw4n5sgQ/exec";
+const DB_PATH_KEYS = "keys";
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+let currentKeyData = null;
+let currentKeyId = null;
+
+/* ====== NHẠC ====== */
+const musicBtn = document.getElementById("musicBtn");
+const bgMusic = document.getElementById("bgMusic");
+let isPlaying = false;
+musicBtn.addEventListener("click", () => {
+  if (!isPlaying) {
+    bgMusic.volume = 0.55;
+    bgMusic.play().then(() => {
+      isPlaying = true; musicBtn.textContent = "🔊 Tắt nhạc"; musicBtn.classList.add("playing");
+    }).catch(err => alert("Không phát được nhạc.\n\n" + err.message));
+  } else {
+    bgMusic.pause(); isPlaying = false;
+    musicBtn.textContent = "🔇 Bật nhạc"; musicBtn.classList.remove("playing");
+  }
+});
+
+/* ====== TUYẾT ====== */
+(function snowEffect() {
+  const canvas = document.getElementById("snowCanvas");
+  const ctx = canvas.getContext("2d");
+  let W, H, flakes = [];
+  function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+  addEventListener("resize", resize); resize();
+  const N = Math.min(90, Math.floor(innerWidth / 14));
+  for (let i = 0; i < N; i++) flakes.push({
+    x: Math.random()*W, y: Math.random()*H,
+    r: Math.random()*2.2+0.6, d: Math.random()*0.8+0.3, o: Math.random()*0.5+0.3
+  });
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = "rgba(180, 230, 255, 0.85)";
+    flakes.forEach(f => {
+      ctx.globalAlpha = f.o;
+      ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, Math.PI*2); ctx.fill();
+      f.y += f.d; f.x += Math.sin(f.y*0.01)*0.4;
+      if (f.y > H+5) { f.y = -5; f.x = Math.random()*W; }
+    });
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ====== TIỆN ÍCH ====== */
+function showMsg(el, text, type = "success") {
+  el.textContent = text; el.className = "form-msg show " + type;
+}
+function hideMsg(el) { el.className = "form-msg"; el.textContent = ""; }
+function toggleLoading(btn, loading) {
+  const txt = btn.querySelector(".btn-text");
+  const spn = btn.querySelector(".btn-spinner");
+  btn.disabled = loading;
+  if (loading) { txt.hidden = true; spn.hidden = false; }
+  else         { txt.hidden = false; spn.hidden = true; }
+}
+
+/* ====== KIỂM TRA KEY ====== */
+async function findKey(keyStr) {
+  // Truy vấn tất cả key và tìm cái khớp
+  const snap = await get(ref(db, DB_PATH_KEYS));
+  const data = snap.val() || {};
+  for (const [id, val] of Object.entries(data)) {
+    if (val.key === keyStr) return { id, ...val };
+  }
+  return null;
+}
+
+function getStatus(k) {
+  if (k.status === "locked") return "locked";
+  if (k.expiresAt && Date.now() > k.expiresAt) return "expired";
+  if (k.maxUses && k.usedCount >= k.maxUses) return "usedup";
+  return "active";
+}
+
+function formatRemaining(k) {
+  if (!k.expiresAt) return "♾️ Vĩnh viễn";
+  const remain = k.expiresAt - Date.now();
+  if (remain <= 0) return "Đã hết hạn";
+  const days = Math.floor(remain / 86400000);
+  const hours = Math.floor((remain % 86400000) / 3600000);
+  const mins = Math.floor((remain % 3600000) / 60000);
+  if (days > 0) return `${days} ngày ${hours} giờ`;
+  if (hours > 0) return `${hours} giờ ${mins} phút`;
+  return `${mins} phút`;
+}
+
+const keyInput = document.getElementById("keyInput");
+const checkKeyBtn = document.getElementById("checkKeyBtn");
+const logoutKeyBtn = document.getElementById("logoutKeyBtn");
+const keyMsg = document.getElementById("keyMsg");
+const keyInfo = document.getElementById("keyInfo");
+const contentArea = document.getElementById("contentArea");
+const lockedArea = document.getElementById("lockedArea");
+
+checkKeyBtn.addEventListener("click", checkKey);
+keyInput.addEventListener("keypress", (e) => { if (e.key === "Enter") checkKey(); });
+
+async function checkKey() {
+  const keyStr = keyInput.value.trim().toUpperCase();
+  hideMsg(keyMsg);
+  if (!keyStr) {
+    showMsg(keyMsg, "⚠️ Vui lòng nhập KEY.", "error");
+    return;
+  }
+
+  checkKeyBtn.disabled = true;
+  showMsg(keyMsg, "⏳ Đang kiểm tra KEY...", "loading");
+
+  try {
+    const keyData = await findKey(keyStr);
+    if (!keyData) {
+      showMsg(keyMsg, "❌ KEY không tồn tại. Vui lòng kiểm tra lại.", "error");
+      return;
+    }
+
+    const st = getStatus(keyData);
+    if (st === "locked") { showMsg(keyMsg, "🔒 KEY đã bị khóa.", "error"); return; }
+    if (st === "expired") { showMsg(keyMsg, "⏰ KEY đã hết hạn.", "error"); return; }
+    if (st === "usedup") { showMsg(keyMsg, "❌ KEY đã hết số lần sử dụng.", "error"); return; }
+
+    // Hợp lệ
+    currentKeyData = keyData;
+    currentKeyId = keyData.id;
+
+    document.getElementById("keyDisplay").textContent = keyData.key;
+    document.getElementById("infoType").textContent = keyData.type || "-";
+    document.getElementById("infoExpires").textContent = formatRemaining(keyData);
+    document.getElementById("infoUses").textContent = keyData.maxUses
+      ? `${keyData.usedCount || 0} / ${keyData.maxUses}`
+      : `${keyData.usedCount || 0} / ∞`;
+
+    keyInfo.classList.add("show");
+    contentArea.classList.remove("hidden");
+    lockedArea.classList.add("hidden");
+    logoutKeyBtn.classList.remove("hidden");
+    document.getElementById("hwKey").value = keyData.key;
+    showMsg(keyMsg, "✅ KEY hợp lệ! Bạn có thể sử dụng dịch vụ.", "success");
+
+    // Lưu vào sessionStorage
+    sessionStorage.setItem("hq_key", keyData.key);
+  } catch (err) {
+    showMsg(keyMsg, "❌ Lỗi: " + err.message, "error");
+  } finally {
+    checkKeyBtn.disabled = false;
+  }
+}
+
+logoutKeyBtn.addEventListener("click", () => {
+  sessionStorage.removeItem("hq_key");
+  location.reload();
+});
+
+/* ====== GỬI DỮ LIỆU LÊN APPS SCRIPT ====== */
+function sendToAppsScript(data) {
+  return new Promise((resolve) => {
+    const iframeName = "hq_iframe_" + Date.now();
+    const iframe = document.createElement("iframe");
+    iframe.name = iframeName; iframe.style.display = "none";
+    document.body.appendChild(iframe);
+
+    const form = document.createElement("form");
+    form.method = "POST"; form.action = APPS_SCRIPT_URL;
+    form.target = iframeName; form.style.display = "none";
+
+    for (const key in data) {
+      const input = document.createElement("input");
+      input.type = "hidden"; input.name = key; input.value = data[key];
+      form.appendChild(input);
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+
+    setTimeout(() => {
+      if (form.parentNode) form.parentNode.removeChild(form);
+      if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
+      resolve({ success: true });
+    }, 4000);
+  });
+}
+
+/* ====== FORM GỬI BÀI TẬP ====== */
+const homeworkForm = document.getElementById("homeworkForm");
+const hwMsg = document.getElementById("hwMsg");
+const hwSubmitBtn = document.getElementById("hwSubmitBtn");
+
+homeworkForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  hideMsg(hwMsg);
+
+  if (!currentKeyData) {
+    showMsg(hwMsg, "⚠️ Vui lòng nhập KEY trước.", "error");
+    return;
+  }
+
+  const data = {
+    type: "homework",
+    name: document.getElementById("hwName").value.trim(),
+    "class": document.getElementById("hwClass").value.trim(),
+    key: currentKeyData.key,
+    title: document.getElementById("hwTitle").value.trim(),
+    content: document.getElementById("hwContent").value.trim(),
+    submittedAt: new Date().toLocaleString("vi-VN")
+  };
+
+  if (!data.name || !data["class"] || !data.title || !data.content) {
+    showMsg(hwMsg, "⚠️ Vui lòng điền đầy đủ tất cả các trường.", "error");
+    return;
+  }
+
+  toggleLoading(hwSubmitBtn, true);
+  showMsg(hwMsg, "⏳ Đang gửi bài tập...", "loading");
+
+  try {
+    await sendToAppsScript(data);
+
+    // Trừ 1 lượt dùng
+    const newUsed = (currentKeyData.usedCount || 0) + 1;
+    await update(ref(db, `${DB_PATH_KEYS}/${currentKeyId}`), { usedCount: newUsed });
+
+    showMsg(hwMsg, "✅ Gửi bài tập thành công! Quản trị viên sẽ phản hồi sớm nhất.", "success");
+    homeworkForm.reset();
+    document.getElementById("hwKey").value = currentKeyData.key;
+
+    // Cập nhật thông tin key
+    currentKeyData.usedCount = newUsed;
+    document.getElementById("infoUses").textContent = currentKeyData.maxUses
+      ? `${newUsed} / ${currentKeyData.maxUses}`
+      : `${newUsed} / ∞`;
+  } catch (err) {
+    showMsg(hwMsg, "❌ Gửi thất bại: " + err.message, "error");
+  } finally {
+    toggleLoading(hwSubmitBtn, false);
+  }
+});
+
+/* ====== FORM MUA KEY ====== */
+const keyForm = document.getElementById("keyForm");
+const buyMsg = document.getElementById("buyMsg");
+const buySubmitBtn = document.getElementById("buySubmitBtn");
+
+keyForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  hideMsg(buyMsg);
+
+  const data = {
+    type: "buykey",
+    name: document.getElementById("buyName").value.trim(),
+    contact: document.getElementById("buyContact").value.trim(),
+    keyType: document.getElementById("buyType").value,
+    quantity: document.getElementById("buyQty").value,
+    payment: document.getElementById("buyPay").value,
+    submittedAt: new Date().toLocaleString("vi-VN")
+  };
+
+  if (!data.name || !data.contact || !data.keyType || !data.quantity || !data.payment) {
+    showMsg(buyMsg, "⚠️ Vui lòng điền đầy đủ tất cả các trường.", "error");
+    return;
+  }
+
+  toggleLoading(buySubmitBtn, true);
+  showMsg(buyMsg, "⏳ Đang gửi yêu cầu...", "loading");
+
+  try {
+    await sendToAppsScript(data);
+    showMsg(buyMsg, "✅ Đã gửi yêu cầu mua KEY! Vui lòng chờ quản trị viên liên hệ xác nhận.", "success");
+    keyForm.reset();
+  } catch (err) {
+    showMsg(buyMsg, "❌ Gửi thất bại: " + err.message, "error");
+  } finally {
+    toggleLoading(buySubmitBtn, false);
+  }
+});
+
+/* ====== KHÔI PHỤC KEY TỪ SESSION ====== */
+(async function restoreSession() {
+  const savedKey = sessionStorage.getItem("hq_key");
+  if (savedKey) {
+    keyInput.value = savedKey;
+    await checkKey();
+  }
+})();
+
+document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
