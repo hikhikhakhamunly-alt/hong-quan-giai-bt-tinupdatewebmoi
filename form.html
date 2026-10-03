@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>📝 Gửi Bài Tập – Hồng Quân</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --neon:#00ff88;--lime:#7dff00;--mint:#00ffc8;
+  --blue:#00d4ff;--blue2:#0077ff;
+  --gold:#ffd700;
+  --text:#e8ffe8;--muted:#7fbf9f;
+  --card:rgba(8,30,18,.75);--border:rgba(0,255,136,.4);
+  --red:#ff4d6d;
+}
+html,body{
+  min-height:100%;font-family:'Quicksand',sans-serif;color:var(--text);
+  background:linear-gradient(-45deg,#04170d,#0a2e18,#062012,#0f3a1f);
+  background-size:400% 400%;
+  animation:bgMove 20s ease infinite;
+  padding:24px 16px;
+}
+@keyframes bgMove{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+.container{
+  max-width:720px;margin:0 auto;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:44px 36px;
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.6),
+    0 0 80px rgba(0,255,136,.15),
+    inset 0 1px 0 rgba(255,255,255,.1);
+  animation:fadeUp .6s ease;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+h1{
+  font-family:'Orbitron',sans-serif;font-size:32px;text-align:center;
+  background:linear-gradient(90deg,var(--neon),var(--lime),var(--mint));
+  background-size:200% auto;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  margin-bottom:8px;letter-spacing:2px;
+  animation:shineText 3s linear infinite;
+  filter:drop-shadow(0 0 15px rgba(0,255,136,.5));
+}
+@keyframes shineText{to{background-position:200% center}}
+.sub{color:var(--muted);font-size:14px;margin-bottom:32px;text-align:center;letter-spacing:.5px}
+.section{
+  background:rgba(4,20,12,.6);
+  border:1px solid rgba(0,255,136,.2);
+  border-radius:16px;
+  padding:20px;
+  margin-bottom:20px;
+}
+.section h2{
+  font-family:'Orbitron',sans-serif;font-size:15px;
+  color:var(--mint);margin-bottom:14px;
+  letter-spacing:1px;text-transform:uppercase;
+}
+.form-group{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.form-group label{font-size:13px;font-weight:700;color:var(--mint);letter-spacing:.5px}
+.form-group input,.form-group textarea,.form-group select{
+  padding:13px 16px;
+  background:rgba(4,20,12,.85);
+  border:1px solid rgba(0,255,136,.25);
+  border-radius:12px;
+  color:var(--text);font-family:inherit;font-size:14px;
+  outline:none;transition:all .3s;width:100%
+}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{
+  border-color:var(--neon);
+  box-shadow:0 0 0 4px rgba(0,255,136,.15),0 0 20px rgba(0,255,136,.3);
+  background:rgba(4,25,15,.9);
+}
+.form-group textarea{resize:vertical;min-height:110px;font-family:inherit}
+.form-group select option{background:#0a2e18;color:#fff}
+.file-label{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  padding:20px;
+  background:rgba(4,20,12,.6);
+  border:2px dashed rgba(0,255,136,.4);
+  border-radius:12px;
+  cursor:pointer;
+  color:var(--muted);font-size:14px;font-weight:600;
+  transition:all .3s;
+}
+.file-label:hover{
+  border-color:var(--neon);
+  background:rgba(0,255,136,.08);
+  color:var(--neon);
+}
+.file-label input{display:none}
+.file-label .icon{font-size:24px}
+.file-name{color:var(--neon);font-weight:600;margin-top:8px;text-align:center;font-size:13px}
+.btn{
+  width:100%;padding:16px;border:none;border-radius:14px;
+  font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;
+  cursor:pointer;transition:all .35s;letter-spacing:1px;
+}
+.btn-submit{
+  background:linear-gradient(135deg,#00aa55,#00ff88,#00ffc8);
+  background-size:200% auto;
+  color:#001a0d;
+  box-shadow:0 8px 25px rgba(0,255,136,.4);
+  margin-top:12px;
+}
+.btn-submit:hover{
+  background-position:200% center;
+  transform:translateY(-3px);
+  box-shadow:0 15px 40px rgba(0,255,136,.6);
+}
+.btn-submit:disabled{
+  opacity:.6;cursor:not-allowed;transform:none;
+}
+.btn-back{
+  background:rgba(255,255,255,.06);
+  color:var(--text);
+  border:1px solid var(--border);
+  margin-top:12px;
+  padding:12px;
+  font-size:13px;
+  width:100%;border-radius:14px;cursor:pointer;
+  font-family:'Orbitron',sans-serif;font-weight:700;
+  transition:all .3s;
+}
+.btn-back:hover{background:rgba(0,255,136,.1);border-color:var(--neon)}
+.msg{
+  padding:14px 16px;border-radius:12px;font-size:14px;
+  margin-top:16px;display:none;line-height:1.6;white-space:pre-line;text-align:center;
+  font-weight:600;
+}
+.msg.show{display:block;animation:fadeUp .3s}
+.msg.success{background:rgba(0,255,136,.12);border:1px solid rgba(0,255,136,.5);color:#7dffb0}
+.msg.error{background:rgba(255,60,100,.12);border:1px solid rgba(255,60,100,.5);color:#ff8ba5}
+.msg.warn{background:rgba(255,204,0,.12);border:1px solid rgba(255,204,0,.5);color:#ffdd66}
+.key-display{
+  display:flex;align-items:center;gap:10px;
+  padding:14px 16px;
+  background:rgba(0,255,136,.1);
+  border:1px solid rgba(0,255,136,.5);
+  border-radius:12px;
+  margin-bottom:20px;
+  font-family:monospace;
+}
+.key-display .icon{font-size:20px}
+.key-display .info{flex:1}
+.key-display .label{font-size:11px;color:var(--muted);text-transform:uppercase;font-family:'Quicksand',sans-serif;font-weight:700;letter-spacing:1px}
+.key-display .value{font-size:14px;color:var(--neon);font-weight:700;margin-top:2px}
+.key-display .status{
+  font-size:11px;padding:3px 10px;border-radius:20px;
+  background:rgba(0,255,136,.2);color:var(--neon);
+  font-family:'Quicksand',sans-serif;font-weight:700;
+}
+.footer{
+  margin-top:28px;padding-top:20px;
+  border-top:1px solid rgba(0,255,136,.15);
+  color:var(--muted);font-size:12px;text-align:center;
+}
+@media(max-width:560px){
+  h1{font-size:24px}
+  .container{padding:28px 20px;border-radius:20px}
+  .section{padding:16px}
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>📝 GỬI BÀI TẬP</h1>
+  <p class="sub">Nhập KEY và gửi bài tập của bạn</p>
+
+  <!-- BƯỚC 1: NHẬP KEY -->
+  <div id="stepKey" class="section">
+    <h2>🔑 Bước 1: Nhập KEY</h2>
+    <div class="form-group">
+      <label>KEY CỦA BẠN</label>
+      <input type="text" id="keyInput" placeholder="VD: HQ-M1-XXXXX-XXXXX" style="font-family:monospace;text-transform:uppercase" />
+    </div>
+    <button class="btn btn-submit" id="checkKeyBtn" onclick="checkKey()">🔓 KIỂM TRA KEY</button>
+    <div id="keyMsg" class="msg"></div>
+  </div>
+
+  <!-- BƯỚC 2: GỬI BÀI -->
+  <div id="stepForm" class="section" style="display:none">
+    <div class="key-display">
+      <span class="icon">✅</span>
+      <div class="info">
+        <div class="label">KEY đang dùng</div>
+        <div class="value" id="keyDisplay">-</div>
+      </div>
+      <span class="status">Hợp lệ</span>
+    </div>
+
+    <h2>📤 Bước 2: Gửi bài tập</h2>
+
+    <div class="form-group">
+      <label>HỌ VÀ TÊN</label>
+      <input type="text" id="studentName" placeholder="VD: Nguyễn Văn A" required />
+    </div>
+
+    <div class="form-group">
+      <label>LỚP</label>
+      <input type="text" id="studentClass" placeholder="VD: 11A1" required />
+    </div>
+
+    <div class="form-group">
+      <label>TIÊU ĐỀ BÀI</label>
+      <input type="text" id="postTitle" placeholder="VD: Bài tập tuần 5" required />
+    </div>
+
+    <div class="form-group">
+      <label>NỘI DUNG BÀI</label>
+      <textarea id="postContent" placeholder="Nhập nội dung bài tập hoặc link Google Drive, Zalo, v.v..." required></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>ĐÍNH KÈM FILE (tùy chọn)</label>
+      <label class="file-label">
+        <span class="icon">📎</span>
+        <span id="fileNameText">Bấm để chọn file (ảnh, PDF, Word...)</span>
+        <input type="file" id="fileInput" accept="image/*,.pdf,.doc,.docx,.txt" onchange="updateFileName()">
+      </label>
+      <div class="file-name" id="fileName"></div>
+    </div>
+
+    <button class="btn btn-submit" id="submitBtn" onclick="submitPost()">🚀 GỬI BÀI</button>
+    <button class="btn btn-back" onclick="resetForm()">← Đổi KEY khác</button>
+    <div id="submitMsg" class="msg"></div>
+  </div>
+
+  <button class="btn btn-back" onclick="location.href='index.html'">← Về trang chủ</button>
+
+  <div class="footer">
+    © 2026 Hồng Quân – Giải Bài Tập Tin
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getDatabase, ref, get, push, set
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBgMM_kWB6jDjTYgP2j-GEnMXKXTwxDdss",
+  authDomain: "hongquan-web.firebaseapp.com",
+  databaseURL: "https://hongquan-web-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "hongquan-web",
+  storageBucket: "hongquan-web.firebasestorage.app",
+  messagingSenderId: "117599956210",
+  appId: "1:117599956210:web:492dc0a9c290c4e346346b"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+let currentKey = null;
+
+async function checkKey() {
+  const keyInput = document.getElementById("keyInput");
+  const btn = document.getElementById("checkKeyBtn");
+  const msg = document.getElementById("keyMsg");
+  const keyValue = keyInput.value.trim().toUpperCase();
+
+  if (!keyValue) {
+    msg.textContent = "⚠️ Vui lòng nhập KEY!";
+    msg.className = "msg warn show";
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "⏳ Đang kiểm tra...";
+  msg.className = "msg";
+
+  try {
+    const snap = await get(ref(db, "keys"));
+    const keys = snap.val() || {};
+    const keyEntry = Object.entries(keys).find(([id, k]) => k.key === keyValue);
+
+    if (!keyEntry) {
+      msg.textContent = "❌ KEY không tồn tại!";
+      msg.className = "msg error show";
+      return;
+    }
+
+    const [keyId, keyData] = keyEntry;
+
+    if (keyData.status === "locked") {
+      msg.textContent = "🔒 KEY đã bị khóa!";
+      msg.className = "msg error show";
+      return;
+    }
+
+    if (keyData.expiresAt && Date.now() > keyData.expiresAt) {
+      msg.textContent = "⚠️ KEY đã hết hạn!";
+      msg.className = "msg error show";
+      return;
+    }
+
+    currentKey = { id: keyId, ...keyData };
+    document.getElementById("keyDisplay").textContent = keyValue;
+    document.getElementById("stepKey").style.display = "none";
+    document.getElementById("stepForm").style.display = "block";
+
+  } catch (err) {
+    msg.textContent = "❌ Lỗi: " + err.message;
+    msg.className = "msg error show";
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "🔓 KIỂM TRA KEY";
+  }
+}
+
+function updateFileName() {
+  const input = document.getElementById("fileInput");
+  const nameEl = document.getElementById("fileName");
+  if (input.files.length > 0) {
+    nameEl.textContent = "📎 " + input.files[0].name;
+  } else {
+    nameEl.textContent = "";
+  }
+}
+
+async function submitPost() {
+  const name = document.getElementById("studentName").value.trim();
+  const cls = document.getElementById("studentClass").value.trim();
+  const title = document.getElementById("postTitle").value.trim();
+  const content = document.getElementById("postContent").value.trim();
+  const fileInput = document.getElementById("fileInput");
+  const btn = document.getElementById("submitBtn");
+  const msg = document.getElementById("submitMsg");
+
+  if (!name || !cls || !title || !content) {
+    msg.textContent = "⚠️ Vui lòng nhập đầy đủ thông tin!";
+    msg.className = "msg warn show";
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "⏳ Đang gửi...";
+  msg.className = "msg";
+
+  try {
+    let fileName = "";
+    if (fileInput.files.length > 0) {
+      fileName = fileInput.files[0].name;
+    }
+
+    const postRef = push(ref(db, "posts"));
+    await set(postRef, {
+      keyUsed: currentKey.key,
+      keyId: currentKey.id,
+      studentName: name,
+      studentClass: cls,
+      title: title,
+      content: content,
+      fileName: fileName,
+      createdAt: Date.now(),
+      status: "pending"
+    });
+
+    msg.textContent = "✅ Đã gửi bài thành công!\n\nThầy/cô sẽ xem bài của bạn sớm.";
+    msg.className = "msg success show";
+
+    document.getElementById("studentName").value = "";
+    document.getElementById("studentClass").value = "";
+    document.getElementById("postTitle").value = "";
+    document.getElementById("postContent").value = "";
+    document.getElementById("fileInput").value = "";
+    document.getElementById("fileName").textContent = "";
+
+  } catch (err) {
+    msg.textContent = "❌ Lỗi: " + err.message;
+    msg.className = "msg error show";
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "🚀 GỬI BÀI";
+  }
+}
+
+function resetForm() {
+  currentKey = null;
+  document.getElementById("keyInput").value = "";
+  document.getElementById("stepKey").style.display = "block";
+  document.getElementById("stepForm").style.display = "none";
+  document.getElementById("keyMsg").className = "msg";
+  document.getElementById("submitMsg").className = "msg";
+}
+
+window.checkKey = checkKey;
+window.submitPost = submitPost;
+window.updateFileName = updateFileName;
+window.resetForm = resetForm;
+
+document.getElementById("keyInput").addEventListener("keypress", (e) => {
+  if (e.key === "Enter") checkKey();
+});
+</script>
+
+</body>
+</html>
