@@ -10,7 +10,7 @@
 :root{
   --neon:#00ff88;--lime:#7dff00;--mint:#00ffc8;
   --blue:#00d4ff;--blue2:#0077ff;
-  --gold:#ffd700;
+  --gold:#ffd700;--purple:#b14dff;
   --text:#e8ffe8;--muted:#7fbf9f;
   --card:rgba(8,30,18,.75);--border:rgba(0,255,136,.4);
   --red:#ff4d6d;
@@ -31,14 +31,9 @@ html,body{
   max-width:720px;margin:0 auto;
   background:var(--card);
   border:1px solid var(--border);
-  border-radius:24px;
-  padding:44px 36px;
+  border-radius:24px;padding:44px 36px;
   backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  box-shadow:
-    0 20px 60px rgba(0,0,0,.6),
-    0 0 80px rgba(0,255,136,.15),
-    inset 0 1px 0 rgba(255,255,255,.1);
+  box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 80px rgba(0,255,136,.15),inset 0 1px 0 rgba(255,255,255,.1);
   animation:fadeUp .6s ease;
 }
 @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
@@ -52,13 +47,11 @@ h1{
   filter:drop-shadow(0 0 15px rgba(0,255,136,.5));
 }
 @keyframes shineText{to{background-position:200% center}}
-.sub{color:var(--muted);font-size:14px;margin-bottom:32px;text-align:center;letter-spacing:.5px}
+.sub{color:var(--muted);font-size:14px;margin-bottom:32px;text-align:center}
 .section{
   background:rgba(4,20,12,.6);
   border:1px solid rgba(0,255,136,.2);
-  border-radius:16px;
-  padding:20px;
-  margin-bottom:20px;
+  border-radius:16px;padding:20px;margin-bottom:20px;
 }
 .section h2{
   font-family:'Orbitron',sans-serif;font-size:15px;
@@ -67,36 +60,26 @@ h1{
 }
 .form-group{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
 .form-group label{font-size:13px;font-weight:700;color:var(--mint);letter-spacing:.5px}
-.form-group input,.form-group textarea,.form-group select{
+.form-group input,.form-group textarea{
   padding:13px 16px;
   background:rgba(4,20,12,.85);
   border:1px solid rgba(0,255,136,.25);
-  border-radius:12px;
-  color:var(--text);font-family:inherit;font-size:14px;
+  border-radius:12px;color:var(--text);font-family:inherit;font-size:14px;
   outline:none;transition:all .3s;width:100%
 }
-.form-group input:focus,.form-group textarea:focus,.form-group select:focus{
+.form-group input:focus,.form-group textarea:focus{
   border-color:var(--neon);
   box-shadow:0 0 0 4px rgba(0,255,136,.15),0 0 20px rgba(0,255,136,.3);
-  background:rgba(4,25,15,.9);
 }
 .form-group textarea{resize:vertical;min-height:110px;font-family:inherit}
-.form-group select option{background:#0a2e18;color:#fff}
 .file-label{
   display:flex;align-items:center;justify-content:center;gap:10px;
-  padding:20px;
-  background:rgba(4,20,12,.6);
-  border:2px dashed rgba(0,255,136,.4);
-  border-radius:12px;
-  cursor:pointer;
-  color:var(--muted);font-size:14px;font-weight:600;
+  padding:20px;background:rgba(4,20,12,.6);
+  border:2px dashed rgba(0,255,136,.4);border-radius:12px;
+  cursor:pointer;color:var(--muted);font-size:14px;font-weight:600;
   transition:all .3s;
 }
-.file-label:hover{
-  border-color:var(--neon);
-  background:rgba(0,255,136,.08);
-  color:var(--neon);
-}
+.file-label:hover{border-color:var(--neon);background:rgba(0,255,136,.08);color:var(--neon)}
 .file-label input{display:none}
 .file-label .icon{font-size:24px}
 .file-name{color:var(--neon);font-weight:600;margin-top:8px;text-align:center;font-size:13px}
@@ -107,29 +90,16 @@ h1{
 }
 .btn-submit{
   background:linear-gradient(135deg,#00aa55,#00ff88,#00ffc8);
-  background-size:200% auto;
-  color:#001a0d;
-  box-shadow:0 8px 25px rgba(0,255,136,.4);
-  margin-top:12px;
+  background-size:200% auto;color:#001a0d;
+  box-shadow:0 8px 25px rgba(0,255,136,.4);margin-top:12px;
 }
-.btn-submit:hover{
-  background-position:200% center;
-  transform:translateY(-3px);
-  box-shadow:0 15px 40px rgba(0,255,136,.6);
-}
-.btn-submit:disabled{
-  opacity:.6;cursor:not-allowed;transform:none;
-}
+.btn-submit:hover{background-position:200% center;transform:translateY(-3px);box-shadow:0 15px 40px rgba(0,255,136,.6)}
+.btn-submit:disabled{opacity:.6;cursor:not-allowed;transform:none}
 .btn-back{
-  background:rgba(255,255,255,.06);
-  color:var(--text);
-  border:1px solid var(--border);
-  margin-top:12px;
-  padding:12px;
-  font-size:13px;
-  width:100%;border-radius:14px;cursor:pointer;
-  font-family:'Orbitron',sans-serif;font-weight:700;
-  transition:all .3s;
+  background:rgba(255,255,255,.06);color:var(--text);
+  border:1px solid var(--border);margin-top:12px;padding:12px;
+  font-size:13px;width:100%;border-radius:14px;cursor:pointer;
+  font-family:'Orbitron',sans-serif;font-weight:700;transition:all .3s;
 }
 .btn-back:hover{background:rgba(0,255,136,.1);border-color:var(--neon)}
 .msg{
@@ -143,12 +113,9 @@ h1{
 .msg.warn{background:rgba(255,204,0,.12);border:1px solid rgba(255,204,0,.5);color:#ffdd66}
 .key-display{
   display:flex;align-items:center;gap:10px;
-  padding:14px 16px;
-  background:rgba(0,255,136,.1);
-  border:1px solid rgba(0,255,136,.5);
-  border-radius:12px;
-  margin-bottom:20px;
-  font-family:monospace;
+  padding:14px 16px;background:rgba(0,255,136,.1);
+  border:1px solid rgba(0,255,136,.5);border-radius:12px;
+  margin-bottom:20px;font-family:monospace;
 }
 .key-display .icon{font-size:20px}
 .key-display .info{flex:1}
@@ -164,6 +131,57 @@ h1{
   border-top:1px solid rgba(0,255,136,.15);
   color:var(--muted);font-size:12px;text-align:center;
 }
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.8);
+  backdrop-filter:blur(10px);
+  display:none;align-items:center;justify-content:center;
+  z-index:9999;padding:20px;
+}
+.modal-overlay.show{display:flex;animation:fadeUp .3s}
+.modal{
+  width:100%;max-width:440px;
+  background:linear-gradient(145deg,rgba(8,30,18,.95),rgba(4,20,12,.95));
+  border:2px solid var(--neon);border-radius:24px;
+  padding:40px 32px;text-align:center;
+  box-shadow:0 20px 80px rgba(0,255,136,.4);
+  animation:modalIn .5s cubic-bezier(.4,0,.2,1);
+}
+@keyframes modalIn{from{opacity:0;transform:scale(.8) translateY(30px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal .spinner{
+  width:70px;height:70px;margin:0 auto 24px;
+  border:5px solid rgba(0,255,136,.2);
+  border-top-color:var(--neon);border-radius:50%;
+  animation:spin 1s linear infinite;
+  box-shadow:0 0 30px rgba(0,255,136,.5);
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.modal h3{
+  font-family:'Orbitron',sans-serif;font-size:22px;
+  color:var(--neon);margin-bottom:14px;
+  letter-spacing:1px;text-shadow:0 0 20px rgba(0,255,136,.6);
+}
+.modal p{color:var(--muted);font-size:14px;line-height:1.7;margin-bottom:10px}
+.modal .order-code{
+  display:inline-block;margin:20px 0;padding:10px 20px;
+  background:rgba(0,255,136,.15);
+  border:1px solid rgba(0,255,136,.5);border-radius:12px;
+  font-family:'Orbitron',monospace;font-size:16px;font-weight:700;
+  color:var(--neon);letter-spacing:2px;
+}
+.modal .note{
+  font-size:12px;color:var(--muted);
+  margin-top:14px;padding-top:14px;
+  border-top:1px solid rgba(0,255,136,.2);
+}
+.modal .btn-close{
+  width:100%;padding:14px;margin-top:20px;
+  border:none;border-radius:14px;
+  background:linear-gradient(135deg,#00aa55,#00ff88);
+  color:#001a0d;
+  font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;
+  cursor:pointer;transition:all .3s;letter-spacing:1px;
+}
+.modal .btn-close:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,255,136,.5)}
 @media(max-width:560px){
   h1{font-size:24px}
   .container{padding:28px 20px;border-radius:20px}
@@ -226,7 +244,7 @@ h1{
       <label class="file-label">
         <span class="icon">📎</span>
         <span id="fileNameText">Bấm để chọn file (ảnh, PDF, Word...)</span>
-        <input type="file" id="fileInput" accept="image/*,.pdf,.doc,.docx,.txt" onchange="updateFileName()">
+        <input type="file" id="fileInput" onchange="updateFileName()">
       </label>
       <div class="file-name" id="fileName"></div>
     </div>
@@ -238,17 +256,32 @@ h1{
 
   <button class="btn btn-back" onclick="location.href='index.html'">← Về trang chủ</button>
 
-  <div class="footer">
-    © 2026 Hồng Quân – Giải Bài Tập Tin
+  <div class="footer">© 2026 Hồng Quân – Giải Bài Tập Tin</div>
+</div>
+
+<!-- MODAL ĐỢI ADMIN -->
+<div class="modal-overlay" id="waitingModal">
+  <div class="modal">
+    <div class="spinner"></div>
+    <h3>⏳ ĐANG CHỜ XÁC NHẬN</h3>
+    <p>Bài của bạn đã được gửi đến thầy/cô!</p>
+    <p>Vui lòng đợi admin kiểm tra và phản hồi.</p>
+    <div class="order-code" id="modalCode">#HQ000</div>
+    <div class="note">
+      📧 Email xác nhận đã được gửi<br>
+      ⏰ Thời gian xử lý: 5-30 phút
+    </div>
+    <button class="btn-close" onclick="closeModal()">✓ ĐÃ HIỂU</button>
   </div>
 </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import {
-  getDatabase, ref, get, push, set
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+<script>
+// ============================================
+// URL APPS SCRIPT — ĐÃ GẮN SẴN
+// ============================================
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwqE64nXo-wxqYe2t3temRRpUmqHItE27BJgjncnT_6l4Ew-kbIO23W6ONnGWqqQGXsGA/exec";
 
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyBgMM_kWB6jDjTYgP2j-GEnMXKXTwxDdss",
   authDomain: "hongquan-web.firebaseapp.com",
@@ -259,11 +292,23 @@ const firebaseConfig = {
   appId: "1:117599956210:web:492dc0a9c290c4e346346b"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-
 let currentKey = null;
+let db = null;
 
+// ===== KHỞI TẠO FIREBASE =====
+(async function initFirebase() {
+  try {
+    const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js");
+    const { getDatabase } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js");
+    const app = initializeApp(firebaseConfig);
+    db = getDatabase(app);
+    console.log("✅ Firebase đã kết nối");
+  } catch (err) {
+    console.error("❌ Lỗi Firebase:", err);
+  }
+})();
+
+// ===== KIỂM TRA KEY =====
 async function checkKey() {
   const keyInput = document.getElementById("keyInput");
   const btn = document.getElementById("checkKeyBtn");
@@ -281,6 +326,10 @@ async function checkKey() {
   msg.className = "msg";
 
   try {
+    if (!db) throw new Error("Firebase chưa kết nối, đợi 1-2 giây rồi thử lại");
+
+    const { ref, get } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js");
+
     const snap = await get(ref(db, "keys"));
     const keys = snap.val() || {};
     const keyEntry = Object.entries(keys).find(([id, k]) => k.key === keyValue);
@@ -309,16 +358,19 @@ async function checkKey() {
     document.getElementById("keyDisplay").textContent = keyValue;
     document.getElementById("stepKey").style.display = "none";
     document.getElementById("stepForm").style.display = "block";
+    console.log("✅ KEY hợp lệ:", keyValue);
 
   } catch (err) {
     msg.textContent = "❌ Lỗi: " + err.message;
     msg.className = "msg error show";
+    console.error(err);
   } finally {
     btn.disabled = false;
     btn.textContent = "🔓 KIỂM TRA KEY";
   }
 }
 
+// ===== UPDATE TÊN FILE =====
 function updateFileName() {
   const input = document.getElementById("fileInput");
   const nameEl = document.getElementById("fileName");
@@ -329,6 +381,7 @@ function updateFileName() {
   }
 }
 
+// ===== GỬI BÀI =====
 async function submitPost() {
   const name = document.getElementById("studentName").value.trim();
   const cls = document.getElementById("studentClass").value.trim();
@@ -354,36 +407,58 @@ async function submitPost() {
       fileName = fileInput.files[0].name;
     }
 
-    const postRef = push(ref(db, "posts"));
-    await set(postRef, {
-      keyUsed: currentKey.key,
-      keyId: currentKey.id,
-      studentName: name,
-      studentClass: cls,
-      title: title,
-      content: content,
-      fileName: fileName,
-      createdAt: Date.now(),
-      status: "pending"
+    console.log("📤 Đang gửi về Apps Script:", SCRIPT_URL);
+
+    const response = await fetch(SCRIPT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({
+        action: "submitPost",
+        studentName: name,
+        studentClass: cls,
+        title: title,
+        content: content,
+        fileName: fileName,
+        keyUsed: currentKey.key,
+        time: new Date().toLocaleString("vi-VN")
+      })
     });
 
-    msg.textContent = "✅ Đã gửi bài thành công!\n\nThầy/cô sẽ xem bài của bạn sớm.";
-    msg.className = "msg success show";
+    console.log("📥 Response status:", response.status);
 
-    document.getElementById("studentName").value = "";
-    document.getElementById("studentClass").value = "";
-    document.getElementById("postTitle").value = "";
-    document.getElementById("postContent").value = "";
-    document.getElementById("fileInput").value = "";
-    document.getElementById("fileName").textContent = "";
+    const result = await response.json();
+    console.log("📥 Response data:", result);
+
+    if (result.success === true) {
+      // Reset form
+      document.getElementById("studentName").value = "";
+      document.getElementById("studentClass").value = "";
+      document.getElementById("postTitle").value = "";
+      document.getElementById("postContent").value = "";
+      document.getElementById("fileInput").value = "";
+      document.getElementById("fileName").textContent = "";
+
+      // Hiện modal
+      const code = "#HQ" + Math.random().toString(36).substring(2, 8).toUpperCase();
+      document.getElementById("modalCode").textContent = code;
+      document.getElementById("waitingModal").classList.add("show");
+    } else {
+      msg.textContent = "❌ Lỗi: " + (result.message || "Không rõ");
+      msg.className = "msg error show";
+    }
 
   } catch (err) {
-    msg.textContent = "❌ Lỗi: " + err.message;
+    msg.textContent = "❌ Lỗi kết nối: " + err.message + "\n\nKiểm tra Console (F12) để xem chi tiết.";
     msg.className = "msg error show";
+    console.error("❌ Lỗi fetch:", err);
   } finally {
     btn.disabled = false;
     btn.textContent = "🚀 GỬI BÀI";
   }
+}
+
+function closeModal() {
+  document.getElementById("waitingModal").classList.remove("show");
 }
 
 function resetForm() {
@@ -399,6 +474,7 @@ window.checkKey = checkKey;
 window.submitPost = submitPost;
 window.updateFileName = updateFileName;
 window.resetForm = resetForm;
+window.closeModal = closeModal;
 
 document.getElementById("keyInput").addEventListener("keypress", (e) => {
   if (e.key === "Enter") checkKey();
